@@ -7,8 +7,9 @@ class UpdateProductComponent extends Component {
 
         this.state = {
             id: this.props.match.params.id,
-            name: '',
-            price: ''
+            // name: '',
+            // quantity:'',
+            // price: ''
         }
         this.changeProductNameHandler = this.changeProductNameHandler.bind(this);
         this.changeProductPriceHandler = this.changeProductPriceHandler.bind(this);
@@ -18,6 +19,7 @@ class UpdateProductComponent extends Component {
         ProductService.getProductById(this.state.id).then( (res) =>{
             let product = res.data;
             this.setState({name: product.name,
+                quantity:product.quantity,
                 price: product.price
             });
         });
@@ -25,13 +27,16 @@ class UpdateProductComponent extends Component {
     changeProductNameHandler = (event) => {
         this.setState({ name: event.target.value });
     }
+    changeProductQuantityHandler = (event) => {
+        this.setState({ quantity: event.target.value });
+    }
 
     changeProductPriceHandler = (event) => {
         this.setState({ price: event.target.value });
     }
    saveOrUpdateProduct = (e) => {
         e.preventDefault();
-        let product = {name: this.state.name, price: this.state.price};
+        let product = {name: this.state.name,quantity:this.state.quantity,price: this.state.price};
         console.log('product => ' + JSON.stringify(product));
         console.log('id => ' + JSON.stringify(this.state.id));
         ProductService.updateProduct(product, this.state.id).then( res => {
@@ -58,9 +63,22 @@ render() {
                                         value={this.state.name} onChange={this.changeProductNameHandler} />
                                 </div>
                                 <div className="form-group">
+                                    <label>Quantity</label>
+                                    <input placeholder="Quantity" name="quantity" className="form-control"
+                                        value={this.state.quantity} onChange={this.changeProductQuantityHandler} />
+                                </div>
+                                <div className="form-group">
                                     <label>Price</label>
                                     <input placeholder="Price" name="price" className="form-control"
                                         value={this.state.price} onChange={this.changeProductPriceHandler} />
+                                </div>
+                                <div className="form-group">
+                                    <label>Category</label>
+                                    <select id="categoryId" placeholder="Product Category" name="category" className="form-control" 
+                                                value={this.state.categoryId} onChange={this.changeCategoryHandler}>
+                                                </select>
+                                    {/* <input placeholder="Price" name="price" className="form-control"
+                                        value={this.state.categoryId} onChange={this.changeProductCategoryHandler} /> */}
                                 </div>
                                 <button className="btn btn-success" onClick={this.saveOrUpdateProduct}>Save</button>
                                 <button className="btn btn-danger" onClick={this.cancel.bind(this)} style={{ marginLeft: "10px" }}>Cancel</button>

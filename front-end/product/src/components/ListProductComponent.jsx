@@ -1,12 +1,17 @@
 import React, { Component } from 'react'
+import CategoryService from '../services/CategoryService'
 import ProductService from '../services/ProductService'
+import CreateProductComponent from './CreateProductComponent'
+
+
 
 class ListProductComponent extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-                products: []
+                products: [],
+                categories:[]
         }
         this.addProduct = this.addProduct.bind(this);
         this.editProduct = this.editProduct.bind(this);
@@ -29,6 +34,9 @@ class ListProductComponent extends Component {
         ProductService.getProducts().then((res) => {
             this.setState({ products: res.data});
         });
+        CategoryService.getCategories().then((res) => {
+            this.setState({ categories: res.data});
+        });
     }
 
     addProduct(){
@@ -50,7 +58,9 @@ class ListProductComponent extends Component {
                                 <tr>
                                 <th> Product Id</th>
                                     <th> Product Name</th>
+                                    <th> Product Quantity</th>
                                     <th> Product Price</th>
+                                    <th>Category</th>
                                     
                                     <th> Actions</th>
                                 </tr>
@@ -62,10 +72,12 @@ class ListProductComponent extends Component {
                                         <tr key = {product.id}>
                                             <td>{product.id}</td>
                                              <td> { product.name} </td>   
+                                             <td> { product.quantity} </td>   
                                              <td> {product.price}</td>
+                                             <td>{product.categoryId}</td>
                                              <td>
                                                  <button onClick={ () => this.editProduct(product.id)} className="btn btn-info">Update </button>
-                                                 <button style={{marginLeft: "10px"}} onClick={ () => this.deleteProduct(product.id)} className="btn btn-danger">Delete </button>
+                                                 <button style={{marginLeft: "10px"}} onClick={ () => { if (window.confirm('Are you sure you wish to delete this item?')) this.deleteProduct(product.id)}} className="btn btn-danger">Delete </button>
                                                  <button style={{marginLeft: "10px"}} onClick={ () => this.viewProduct(product.id)} className="btn btn-info">View </button>
                                              </td>
                                         </tr>

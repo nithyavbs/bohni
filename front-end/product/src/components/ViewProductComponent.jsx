@@ -33,8 +33,16 @@ class ViewProductComponent extends Component {
                             <div> { this.state.product.name }</div>
                         </div>
                         <div className = "row">
+                            <label> Product Quantity: </label>
+                            <div> { this.state.product.quantity}</div>
+                        </div>
+                        <div className = "row">
                             <label> Product Price: </label>
                             <div> { this.state.product.price }</div>
+                        </div>
+                        <div className = "row">
+                            <label> Product Category: </label>
+                            <div> { this.state.product.categoryId }</div>
                         </div>
                     </div>
 
